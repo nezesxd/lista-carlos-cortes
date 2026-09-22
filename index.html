@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carlos Oliverr | Fila Online</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!--ICONE-->
+    <link rel="icon" type="image/png" href="img/foto.jpeg">
+
+    <link rel="apple-touch-icon" href="img/logo.jpeg">
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#000000">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Andersinho Bebidas">
+    <!--ICONE-->
+
+
+</head>
+<body>
+    <!-- TELA DE BEM-VINDO (SPLASH SCREEN) -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <img src="img/foto.jpeg" alt="Logo" class="splash-logo">
+            <h1>Seja bem-vindo</h1>
+            
+            <div class="loader"></div>
+        </div>
+    </div>
+    <header class="client-header">
+        <h1>Carlos Oliverr</h1>
+        <p>Barbearia Clássica & Moderna</p>
+    </header>
+
+    <main class="container">
+        <section class="form-section">
+            <h2>Entrar na Fila</h2>
+            <form id="filaForm">
+                <input type="date" id="dataEscolhida" required>
+                <!-- NOVO: Aviso de horário -->
+                <p id="horarioFuncionamento" class="horario-aviso">🕒 Carregando horários...</p>
+                <input type="text" id="nomeCliente" placeholder="Seu Nome ou Apelido" required>
+                <!-- NOVO CAMPO: WhatsApp -->
+                <input type="tel" id="whatsappCliente" placeholder="WhatsApp (71) 99999-9999" maxlength="15" required style="width: 100%; padding: 14px; margin-bottom: 1rem; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 8px; font-size: 1rem; transition: all 0.3s ease;">
+                <div id="listaServicos" class="services-container">
+                    <p>Carregando serviços...</p>
+                </div>
+
+                <button type="submit" class="btn-primary">Confirmar Presença</button>
+            </form>
+        </section>
+
+        <section class="queue-section">
+            <h2>Fila de Hoje</h2>
+            <ul id="filaAtual" class="queue-list">
+                </ul>
+        </section>
+    </main>
+
+    <footer class="social-footer">
+    </footer>
+    <div class="dev-footer">
+            Desenvolvido por Vinicius Menezes
+        </div>
+    <div id="toast-container"></div>
+    <script type="module" src="js/client.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Admin - Carlos Oliverr</title>
+    <link rel="stylesheet" href="css/admin.css">
+
+    <!--ICONE-->
+    <link rel="icon" type="image/png" href="img/foto.jpeg">
+
+    <link rel="apple-touch-icon" href="img/foto.jpeg">
+
+    <link rel="manifest" href="manifest.json">
+
+    <meta name="theme-color" content="#000000">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Andersinho Bebidas">
+    <!--ICONE-->
+
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <h2>Admin Panel</h2>
+            <nav>
+                <button onclick="showTab('gerenciarFila')">Gerenciar Fila</button>
+                <button onclick="showTab('servicos')">Serviços e Valores</button>
+                <button onclick="showTab('gerenciarDatas')">Gerenciar Datas</button>
+                <button onclick="showTab('financeiro')">Financeiro</button>
+                <button onclick="showTab('historico')">Histórico de Clientes</button>
+            </nav>
+        </aside>
+
+        <main class="content-area">
+
+            <section id="gerenciarFila" class="tab-content active">
+                <h2>Fila de Clientes</h2>
+
+                <div
+                    style="margin-bottom: 20px; background-color: var(--sidebar-bg); padding: 15px; border-radius: 8px; border-left: 5px solid var(--gold);">
+                    <label for="dataFilaAdmin"
+                        style="display: block; margin-bottom: 8px; color: var(--text-light); font-weight: bold;">Selecione
+                        a data da fila que deseja visualizar:</label>
+                    <input type="date" id="dataFilaAdmin" class="form-control"
+                        style="padding: 10px; border-radius: 4px; border: 1px solid #444; background: #2a2d34; color: white; width: 100%; max-width: 300px;">
+                </div>
+
+                <div id="adminFilaList">
+                </div>
+            </section>
+
+            <section id="servicos" class="tab-content" style="display:none;">
+                <h2>Gerenciar Serviços</h2>
+                <div
+                    style="background-color: var(--sidebar-bg); padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--gold);">
+                    <form id="formServico" style="display: flex; flex-direction: column; gap: 15px;">
+                        <input type="text" id="nomeServico" placeholder="Nome do Serviço (ex: Corte Degradê)" required
+                            style="padding: 10px; border-radius: 4px; border: 1px solid #444; background: #2a2d34; color: white;">
+                        <input type="number" id="valorServico" placeholder="Valor (ex: 35.00)" step="0.01" required
+                            style="padding: 10px; border-radius: 4px; border: 1px solid #444; background: #2a2d34; color: white;">
+                        <button type="submit" class="btn-success"
+                            style="padding: 12px; font-size: 1rem; border: none; border-radius: 4px; cursor: pointer;">➕
+                            Cadastrar Serviço</button>
+                    </form>
+                </div>
+                <h3>Serviços Ativos</h3>
+                <ul id="listaServicosAdmin" class="queue-list" style="margin-top: 15px;">
+                </ul>
+            </section>
+
+            <section id="gerenciarDatas" class="tab-content" style="display:none;">
+                <h2>Gerenciar Datas (Bloqueios)</h2>
+                <div
+                    style="background-color: var(--sidebar-bg); padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #dc3545;">
+                    <p style="margin-bottom: 10px;">Selecione uma data para impedir novos agendamentos:</p>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="date" id="dataBloqueio" class="form-control"
+                            style="padding: 10px; border-radius: 4px; border: 1px solid #444; background: #2a2d34; color: white; flex: 1;">
+                        <button onclick="bloquearData()" class="btn-danger"
+                            style="padding: 10px; border: none; border-radius: 4px; cursor: pointer;">🔒 Encerrar
+                            Data</button>
+                    </div>
+                </div>
+                <!-- NOVO: Configuração de Horário -->
+                <div style="background-color: var(--sidebar-bg); padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid var(--gold);">
+                    <h3 style="margin-bottom: 15px; font-size: 1.1rem;">Horário Permitido para Entrar na Lista</h3>
+                    <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                        <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                            <input type="checkbox" id="check24h" style="width: 18px; height: 18px;"> 24 Horas
+                        </label>
+                        <input type="time" id="horaAbertura" class="form-control" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #2a2d34; color: white;">
+                        <span>às</span>
+                        <input type="time" id="horaFechamento" class="form-control" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #2a2d34; color: white;">
+                        <button onclick="salvarHorarios()" class="btn-success" style="padding: 8px 15px;">💾 Salvar Horário</button>
+                    </div>
+                </div>
+                <h3>Datas Atualmente Bloqueadas</h3>
+                <ul id="listaDatasAdmin" class="queue-list" style="margin-top: 15px;">
+                </ul>
+            </section>
+
+            <section id="financeiro" class="tab-content" style="display:none;">
+                <h2>Balanço Financeiro</h2>
+
+                <div
+                    style="background-color: var(--sidebar-bg); padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #28a745; display: flex; gap: 20px; flex-wrap: wrap;">
+
+                    <div style="flex: 1; min-width: 200px;">
+                        <label for="filtroMes"
+                            style="display: block; margin-bottom: 8px; color: var(--text-light); font-weight: bold;">Filtrar
+                            Mês:</label>
+                        <input type="month" id="filtroMes" class="form-control"
+                            style="padding: 10px; border-radius: 4px; border: 1px solid #444; background: #2a2d34; color: white; width: 100%;">
+                    </div>
+
+                    <div style="flex: 1; min-width: 200px;">
+                        <label for="filtroSemana"
+                            style="display: block; margin-bottom: 8px; color: var(--text-light); font-weight: bold;">Filtrar
+                            Semana (Escolha um dia da semana):</label>
+                        <input type="date" id="filtroSemana" class="form-control"
+                            style="padding: 10px; border-radius: 4px; border: 1px solid #444; background: #2a2d34; color: white; width: 100%;">
+                    </div>
+
+                </div>
+
+                <div class="dashboard-cards">
+                    <div class="card">Semana Filtrada: <span id="balancoSemanal">R$ 0,00</span></div>
+                    <div class="card">Mês Filtrado: <span id="balancoMensal">R$ 0,00</span></div>
+                    <div class="card">Total do Ano: <span id="balancoAnual">R$ 0,00</span></div>
+                </div>
+            </section>
+
+            <section id="historico" class="tab-content" style="display:none;">
+                <h2>Histórico Geral</h2>
+                <p style="margin-bottom: 15px; color: var(--text-muted);">Registro de todos os clientes cadastrados em
+                    todas as datas.</p>
+                <ul id="listaHistoricoAdmin" class="queue-list">
+                </ul>
+            </section>
+
+        </main>
+    </div>
+    <div class="dev-footer">
+            Desenvolvido por Vinicius Menezes
+        </div>
+    <script type="module" src="js/admin.js"></script>
+    <script>
+        function showTab(tabId) {
+            // Esconde todas as abas
+            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+            // Mostra a aba que foi clicada
+            document.getElementById(tabId).style.display = 'block';
+        }
+    </script>
+    <div id="toast-container"></div>
+</body>
+
+</html>
